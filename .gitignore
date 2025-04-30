@@ -4,3 +4,5 @@ venv_new
 __pycache__
 test*
 TODO*
+examples/raw_data/GNSS_Gamma_Marche_2016/*
+examples/raw_data/GNSS_Vigneti_Marche_2021/*
