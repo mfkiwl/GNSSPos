@@ -13,16 +13,16 @@ argparser = argparse.ArgumentParser(description="GNSS Positioning Algorithm")
 args = argparser.parse_args()
 
 # Path della cartella di lavoro
-workingDirectory = '/home/luca/Scrivania/GNSSPos/examples/working_directory_ferrara/'
+workingDirectory = os.path.join(os.path.dirname(__file__), 'examples', 'working_directory_ferrara')
 
 # L'algoritmo prende in input i file .pos dei rover e del base station, e un insieme di soglie
 rovers = [
-    Rover(name="Rover1", pos_file=f"{workingDirectory}rover_1.pos"),
-    Rover(name="Rover2", pos_file=f"{workingDirectory}rover_2.pos"),
-    Rover(name="Rover3", pos_file=f"{workingDirectory}rover_3.pos"),
+    Rover(name="Rover1", pos_file=f"{workingDirectory}/rover_1.pos"),
+    Rover(name="Rover2", pos_file=f"{workingDirectory}/rover_2.pos"),
+    Rover(name="Rover3", pos_file=f"{workingDirectory}/rover_3.pos"),
 ]
 
-base = Rover(name="Base Station", pos_file=f"{workingDirectory}base_station.pos")
+base = Rover(name="Base Station", pos_file=f"{workingDirectory}/base_station.pos")
 
 thesholds = {
     (rovers[0], rovers[1]): 20.0,
@@ -71,7 +71,7 @@ def create_dataframes():
         # aggiungi una colonna con il nome del rover
         df['rover'] = r.name
         # salvo il DataFrame in un pickle
-        df.to_pickle(f"{workingDirectory}{r.name}.pkl")
+        df.to_pickle(f"{workingDirectory}/{r.name}.pkl")
 
 # se nella working directory non ci sono i file .pkl o se lo richiedo esplicitamente, li creo
 if (not all([f"{r.name}.pkl" in os.listdir(workingDirectory) for r in rovers])):
@@ -88,7 +88,7 @@ max_gpst = 0
 
 for r in rovers:
     # carica il DataFrame dal pickle
-    df = pd.read_pickle(f"{workingDirectory}{r.name}.pkl")
+    df = pd.read_pickle(f"{workingDirectory}/{r.name}.pkl")
     # calcola il GPST minimo e massimo
     if min_gpst == 0:
         min_gpst = df.index.min()
@@ -318,9 +318,9 @@ def algorithm():
         current_gpst += pd.Timedelta(seconds=1)
         
     # salvo il DataFrame finale in un pickle
-    final_df.to_pickle(f"{workingDirectory}final_df.pkl")
+    final_df.to_pickle(f"{workingDirectory}/final_df.pkl")
     # salvo il DataFrame finale in un file .pos
-    final_df.to_csv(f"{workingDirectory}final_df.pos", sep=' ', index=True, header=True)
+    final_df.to_csv(f"{workingDirectory}/final_df.pos", sep=' ', index=True, header=True)
 
     # stampo il DataFrame finale
     print("Final DataFrame:")
@@ -330,7 +330,7 @@ def algorithm():
     
 # read from pickle
 print("Reading final DataFrame from pickle...")
-final_df = pd.read_pickle(f"{workingDirectory}final_df.pkl")
+final_df = pd.read_pickle(f"{workingDirectory}/final_df.pkl")
 
 import matplotlib.pyplot as plt
 

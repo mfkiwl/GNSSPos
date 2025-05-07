@@ -2,3 +2,8 @@ unlzw3
 pyproj
 contextily
 dotenv
+PyQt6
+pandas
+numpy
+matplotlib
+tqdm
